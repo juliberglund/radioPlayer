@@ -17,10 +17,7 @@ async function fetchData() {
         const listItem = document.createElement("div");
         listItem.classList.add("channel-item"); // ADDED: Give listItem a class for styling
 
-        const imgDiv = document.createElement("div");
-        imgDiv.classList.add("image-container");
-
-        // 2. Create a div for the channel's name and audio controls
+        // 1. Create a div for the channel's name and audio controls
         const nameAndAudioDiv = document.createElement("div"); // NEW: Container for Name and Audio
         nameAndAudioDiv.classList.add("name-audio-container"); // ADDED: Class for name and audio
 
@@ -31,13 +28,15 @@ async function fetchData() {
         if (channel.color) {
           listItem.style.backgroundColor = `#${channel.color}`; // Apply color as background
         }
-        // Create a link to the channel's website
-        const channelLink = document.createElement("h1");
-        channelLink.textContent = channel.name; // Set the channel name
 
         // Create an image element for the channel's logo
         const channelImage = document.createElement("img");
         channelImage.src = channel.image; // Set the image source
+        listItem.appendChild(channelImage); // Append image directly to listItem
+
+        // Create a link to the channel's website
+        const channelLink = document.createElement("h1");
+        channelLink.textContent = channel.name; // Set the channel name
 
         // Create a link to audio (only if liveaudio exists)
         const audioLink = document.createElement("audio");
@@ -50,14 +49,11 @@ async function fetchData() {
           nameAndAudioDiv.appendChild(noAudioMessage); // ADD the message inside nameAndAudioDiv
         }
 
-        // Add all elements to the list item
-        imgDiv.appendChild(channelImage);
-        listItem.appendChild(imgDiv);
-        listItem.appendChild(channelLink);
-        listItem.appendChild(audioLink);
-        listItem.appendChild(nameAndAudioDiv);
-        nameAndAudioDiv.appendChild(channelLink);
-        nameAndAudioDiv.appendChild(audioLink);
+        // Add channel link and audio player inside the same div
+        nameAndAudioDiv.appendChild(channelLink); // Append channel name
+        nameAndAudioDiv.appendChild(audioLink); // Append audio player
+        listItem.appendChild(nameAndAudioDiv); // Append the div to listItem
+
         // Append the list item to the <ul> element
         channelList.appendChild(listItem);
       });
@@ -70,5 +66,4 @@ async function fetchData() {
 }
 
 // Call fetchData when the page loads
-
 window.onload = fetchData;
